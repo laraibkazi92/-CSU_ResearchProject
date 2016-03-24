@@ -23,7 +23,8 @@ with open(sys.argv[1], 'r') as data:
     month = 12 
     year = 2014
 		
-    timeBucket = 0
+    timeBucket_H = 0
+    timeBucket_M = 0
     time = 0
     in_pos = 2
     out_pos = 291
@@ -33,9 +34,9 @@ with open(sys.argv[1], 'r') as data:
     while(in_pos < 290):
         
         cursor = con.cursor()
-        date = str(month).zfill(2) + '-' + str(day).zfill(2) + '-' + str(year) + ' ' + str(timeBucket).zfill(4)
+        date = str(year) + '-' + str(month).zfill(2) + '-' + str(day).zfill(2) + ' ' + str(timeBucket_H).zfill(2) + ':' + str(timeBucket_M).zfill(2)
         dateFormat = '%m-%d-%Y %H%M'
-        finalDate = datetime.strptime(date, dateFormat)
+        #finalDate = datetime.strptime(date, dateFormat)
 	  
         minute = int(str(time).zfill(4))
         #minuteFormat = '%H%M'
@@ -52,11 +53,11 @@ with open(sys.argv[1], 'r') as data:
 			  
         cql_query = "INSERT INTO ntp.lander (ts, min, from_ip, to_ip, port, in_data, out_data) VALUES ('" + date + "', " + str(minute) + ", '" +  row[0] + "', '" +  row[1] + "', " +  str(port) + ", " +  str(dataIn) + ", " +  str(dataOut) + ") " ;
 	  
-        print(cql_query)
+        cursor.execute(cql_query)
 	  
         in_pos = in_pos + 1
         out_pos = out_pos + 1
-        timeBucket = timeBucket + 100
+        timeBucket_H = timeBucket_H + 1
         time = time + 100
 			
         if(time == 2400):
