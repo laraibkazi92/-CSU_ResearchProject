@@ -62,7 +62,7 @@ with open(sys.argv[1], 'r') as data:
 			
         if(time == 2400):
           day = day + 1
-          timeBucket = 0
+          timeBucket_H = 0
           time = 0
 				
 		# Further code to be written for addressing :
